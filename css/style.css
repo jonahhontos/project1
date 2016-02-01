@@ -33,3 +33,29 @@ body {
   border-radius: 16px;
   background-color: #0000ff;
 }
+
+.row {
+  width: 100%;
+  /*height: 104px;*/
+  /*clear: both;*/
+  overflow: hidden;
+  background-color: #333;
+}
+
+.character-slot {
+  height: 104px;
+  width:100px;
+  margin: 10px;
+  /*background-color: #333;*/
+  background-image: url("../assets/fighter_default.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
