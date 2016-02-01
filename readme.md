@@ -18,7 +18,19 @@ As a player, I want to be able to select a character class so that I can have co
 
 As a player, I want to be able to use my character class's special abilities.
 
-*- From DD -*
+## Organizing
+
+- Character sprite naming
+  - [class]_[state].png
+    - [states]
+      - default
+      - walk
+      - attack
+      - use
+      - hurt
+      - ko
+
+## *- From DD -*
 
 ***Objective***
 
