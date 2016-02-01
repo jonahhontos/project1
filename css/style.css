@@ -1,5 +1,16 @@
+@font-face {
+  font-family: 'Final Fantasy';
+  src: url('../assets/final_fantasy.ttf') format('truetype');
+}
+
 body {
   background-color: #111;
+  font-family: 'Final Fantasy', sans-serif;;
+  font-size: 70px;
+  color: #FFF;
+  letter-spacing: 2px;
+  text-shadow: 4px 4px 0 #000;
+  /*line-height: 0;*/
 }
 
 #container {
@@ -29,10 +40,32 @@ body {
 #menu-bar {
   height: 296px;
   width: 100%;
+  /*border: 4px ridge #FFF;
+  border-radius: 16px;
+  background-color: #0000ff;*/
+}
+
+.action-menu {
   border: 4px ridge #FFF;
   border-radius: 16px;
   background-color: #0000ff;
+  width: 300px;
+  vertical-align: -10px;
+  padding-bottom: 30px;
 }
+
+.menu-item {
+  padding-left:70px;
+  /*background-color: #333;*/
+}
+
+.menu-item-hover {
+  background-image: url("../assets/cursor.png");
+  background-position: 0 10px;
+  background-repeat: no-repeat;
+}
+
+
 
 #l-slot-1, #l-slot-2 {
   -moz-transform: scaleX(-1);
