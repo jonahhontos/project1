@@ -4,15 +4,23 @@
 
 # User Stories
 
+##### MVP:
+
 As a player, I want to be able to select actions.
 
 As a player, I want to be able to see the character I'm playing as.
 
 As a player, I want to be able to see the status of my character and my opponent's character so that I can see how close I am to winning/losing.
 
+##### Beyond MVP:
+
+As a player, I want to be able to select a character class so that I can have control over my play style.
+
+As a player, I want to be able to use my character class's special abilities.
+
 *- From DD -*
 
-***Objectives***
+***Objective***
 
 Create a clone of the battle system from Final Fantasy I for NES adapted for two players.
 
@@ -51,4 +59,3 @@ Create a clone of the battle system from Final Fantasy I for NES adapted for two
 •	Add winner evaluation
 •	Play sounds/music
 ```
-
