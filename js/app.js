@@ -8,8 +8,9 @@ $('body').on("mouseout",".menu-item",function(){
   // console.log("mouseout on " + this)
 })
 
-function Player(character) {
+function Player(character, side, slot) {
   this.character = character
+  this.$slotID = $("#" + side + "-slot-" + slot)
 }
 
 function Fighter() {
@@ -19,9 +20,13 @@ function Fighter() {
 }
 
 function Character() {
-  this.attack = function(){
-    var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75) 
-    console.log(attackStrength)
+  this.attack = function(target){
+    var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
+    target.takeDamage(attackStrength)
+    // console.log(attackStrength)
+  }
+  this.takeDamage = function(damageAmount) {
+    this.hp -= damageAmount
   }
 }
 
