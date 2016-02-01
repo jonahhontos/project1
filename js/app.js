@@ -11,6 +11,7 @@ $('body').on("mouseout",".menu-item",function(){
 function Player(character, side, slot) {
   this.character = character
   this.$slotID = $("#" + side + "-slot-" + slot)
+  this.$slotID.css("background-image", "url('./assets/" + this.character.imagePrefix + "_default.png')")
 }
 
 function Fighter() {
@@ -33,5 +34,5 @@ function Character() {
 Fighter.prototype = new Character()
 
 var game = {
-  players: [new Player(new Fighter()), new Player(new Fighter())]
+  players: [new Player(new Fighter(),"l",1), new Player(new Fighter(),"r",1)]
 }
