@@ -25,3 +25,11 @@ body {
   width: 100%;
   /*background-color: #333;*/
 }
+
+#menu-bar {
+  height: 296px;
+  width: 100%;
+  border: 4px ridge #FFF;
+  border-radius: 16px;
+  background-color: #0000ff;
+}
