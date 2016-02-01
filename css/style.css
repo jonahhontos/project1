@@ -19,3 +19,9 @@ body {
   background-image: url("../assets/column.png");
   background-repeat: repeat-x;
 }
+
+#playing-field {
+  height: 248px;
+  width: 100%;
+  /*background-color: #333;*/
+}
