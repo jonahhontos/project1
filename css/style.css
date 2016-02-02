@@ -95,6 +95,15 @@ body {
   background-repeat: no-repeat;
 }
 
+.weapon-slot {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  background: url("../assets/fighter_weapon.png");
+  right: 42px;
+  top: 8px;
+}
+
 .left {
   float: left;
 }
