@@ -14,23 +14,42 @@
     // console.log("mouseout on " + this)
   })
 
+  $('#start').click(function(){
+    game.nextTurn()
+  })
+
 //
 // PLAYER CONSTRUCTOR
 //
-  function Player(character, side, slot) {
-    this.character = character
-    this.$slotID = $("#" + side + "-slot-" + slot)
-    this.$weaponSlot = $("#" + side + "-slot-" + slot + "-weapon")
-    this.$weaponSlot.hide()
-    this.$weaponSlot.css("background-image", "url('./assets/" + this.character.imagePrefix + "_weapon.png')")
+  function Player() {
+    // SET UP JQUERY OBJECTS AND IMAGES
+    this.init = function(){
+      this.$slotID = $("#" + this.side + "-slot-" + this.slot)
+      this.$weaponSlot = $("#" + this.side + "-slot-" + this.slot + "-weapon")
+      this.$weaponSlot.hide()
+      this.$weaponSlot.css("background-image", "url('./assets/" + this.imagePrefix + "_weapon.png')")
+      console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
+      this.setSprite()
+      this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
+      this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
+    }
 
     this.setSprite = function(state) {
       if (state===undefined){state="default"}
       console.log("sprite set to " + state)
-      this.$slotID.css("background-image", "url('./assets/" + this.character.imagePrefix + "_" + state + ".png')")
+      this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_" + state + ".png')")
+      console.log("url('./assets/" + this.imagePrefix + "_" + state + ".png')")
     }
 
-    this.setSprite("default")
+    this.sayImagePrefix = function() {
+      return this.imagePrefix
+    }
+
+    // this.setSprite("default")
+
+    this.updateHP = function() {
+      $('#hp-' + this.side).text(this.hp+"hp")
+    }
 
     //
     // WALK ANIMATIONS
@@ -38,9 +57,6 @@
     this.setWalk = function(){
       this.setSprite("walk")
     }
-
-    this.walkForwardDirection = side === "l" ? "+=20px" : "-=20px"
-    this.walkBackwardDirection = side === "l" ? "-=20px" : "+=20px"
 
     this.walkForward = function() {
       console.log(this + " walked forward")
@@ -68,7 +84,7 @@
     // GETTING ACTIONS FOR A PLAYER TURN
     //
     this.getAction = function(){
-      var menuPosition = side === 'l' ? "left" : "right"
+      var menuPosition = this.side === 'l' ? "left" : "right"
       // console.log("getAction called");
       $('#menu-bar').append('<div class = "action-menu ' + menuPosition + '"></div>')
       $('.action-menu').append('<div class = "menu-item fight">FIGHT</div>')
@@ -81,7 +97,7 @@
     }
 
     this.fight = function() {
-      this.turnAction = this.character.attack
+      this.turnAction = this.attack
       this.endTurn()
     }
 
@@ -90,22 +106,10 @@
       this.walkBackward()
       game.nextTurn()
     }
-  } // PLAYER CONSTRUCTOR END
 
-
- //
- // CHARACTER CLASS CONSTRUCTORS
- //
-  function Fighter() {
-    this.imagePrefix = "fighter"
-    this.hp = 300
-    this.str = 50
-  }
-
-  //
-  // CHARACTER CONSTRUCTOR
-  //
-  function Character() {
+    //
+    // EXECUTE ACTIONS
+    //
     this.attack = function(target){
       var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
       target.takeDamage(attackStrength)
@@ -114,17 +118,35 @@
     this.takeDamage = function(damageAmount) {
       this.hp -= damageAmount
     }
+  } // PLAYER CONSTRUCTOR END
+
+
+ //
+ // CHARACTER CLASS CONSTRUCTORS
+ //
+  function Fighter(side, slot) {
+    this.side = side
+    this.slot = slot
+    this.imagePrefix = "fighter"
+    this.hp = 300
+    this.str = 50
   }
 
-  Fighter.prototype = new Character()
+  Fighter.prototype = new Player()
 
 //
 // GAME OBJECT DECLARATION
 //
   var game = {
     turn: 0,
-    players: [new Player(new Fighter(),"l",1), new Player(new Fighter(),"r",1)],
+    players: [new Fighter("l",1), new Fighter("r",1)],
+    updateHPs: function() {
+      for (var i=0; i < game.players.length; i++) {
+        game.players[i].updateHP()
+      }
+    },
     nextTurn: function() {
+      game.updateHPs()
       console.log("before: " + this.turn)
       if (this.turn === this.players.length) {
         this.turn = 0
@@ -137,7 +159,18 @@
     },
     doActions: function(){
       console.log("doActions")
+      for (var i = 0; i < this.players.length; i++){
+        // players[i].doAction
+      }
+      game.updateHPs()
+      },
+    init: function(){
+      game.updateHPs()
+      for (var i = 0; i < this.players.length; i++){
+        this.players[i].init()
+      }
     }
   }
+game.init()
 
 // })
