@@ -22,6 +22,7 @@
     this.$slotID = $("#" + side + "-slot-" + slot)
 
     this.setSprite = function(state) {
+      if (state===undefined){state="default"}
       console.log("sprite set to " + state)
       this.$slotID.css("background-image", "url('./assets/" + this.character.imagePrefix + "_" + state + ".png')")
     }
@@ -31,34 +32,33 @@
     //
     // WALK ANIMATIONS
     //
-
     this.setWalk = function(){
       this.setSprite("walk")
     }
 
-    this.walkForwardDirection = side === "l" ? "+=50px" : "-=50px"
-    this.walkBackwardDirection = side === "l" ? "-=50px" : "+=50px"
+    this.walkForwardDirection = side === "l" ? "+=20px" : "-=20px"
+    this.walkBackwardDirection = side === "l" ? "-=20px" : "+=20px"
 
     this.walkForward = function() {
       console.log(this + " walked forward")
-      var speed = 200
-      //this.setSprite("walk")
-      this.$slotID.animate({"left": this.walkForwardDirection},speed)
-      // window.setTimeout(this.setWalk.bind(this), speed)
-      // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("walk"))
-      // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("default"))
-      // this.$slotID.animate({"left": this.walkDirection},speed)
+      var speed = 50
+      this.$slotID.animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+                  .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+                  .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
     }
 
     this.walkBackward = function() {
       console.log(this + " walked forward")
-      var speed = 200
-      //this.setSprite("walk")
-      this.$slotID.animate({"left": this.walkBackwardDirection},speed)
-      // window.setTimeout(, 1000)
-      // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("walk"))
-      // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("default"))
-      // this.$slotID.animate({"left": this.walkDirection},speed)
+      var speed = 50
+      this.$slotID.animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+                  .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+                  .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
     }
 
     //
@@ -100,7 +100,7 @@
 
   //
   // CHARACTER CONSTRUCTOR
-
+  //
   function Character() {
     this.attack = function(target){
       var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
@@ -117,12 +117,19 @@
 //
 // GAME OBJECT DECLARATION
 //
-
   var game = {
     turn: 0,
     players: [new Player(new Fighter(),"l",1), new Player(new Fighter(),"r",1)],
     nextTurn: function() {
-      
+      this.players[this.turn].takeTurn()
+      this.turn++
+      if (this.turn === this.players.length) {
+        this.turn = 0
+        this.doActions()
+      }
+    },
+    doActions: function(){
+      console.log("doActions");
     }
   }
 
