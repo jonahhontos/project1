@@ -20,6 +20,9 @@
   function Player(character, side, slot) {
     this.character = character
     this.$slotID = $("#" + side + "-slot-" + slot)
+    this.$weaponSlot = $("#" + side + "-slot-" + slot + "-weapon")
+    this.$weaponSlot.hide()
+    this.$weaponSlot.css("background-image", "url('./assets/" + this.character.imagePrefix + "_weapon.png')")
 
     this.setSprite = function(state) {
       if (state===undefined){state="default"}
