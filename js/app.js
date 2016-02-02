@@ -83,6 +83,7 @@
     }
 
     this.endTurn = function() {
+      $('.action-menu').remove()
       this.walkBackward()
       game.nextTurn()
     }
@@ -121,15 +122,18 @@
     turn: 0,
     players: [new Player(new Fighter(),"l",1), new Player(new Fighter(),"r",1)],
     nextTurn: function() {
-      this.players[this.turn].takeTurn()
-      this.turn++
+      console.log("before: " + this.turn)
       if (this.turn === this.players.length) {
         this.turn = 0
         this.doActions()
+      } else {
+        this.players[this.turn].takeTurn()
+        this.turn++
       }
+      console.log("after: " + this.turn);
     },
     doActions: function(){
-      console.log("doActions");
+      console.log("doActions")
     }
   }
 
