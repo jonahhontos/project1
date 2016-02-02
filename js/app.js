@@ -19,20 +19,31 @@ function Player(character, side, slot) {
     this.setSprite("walk")
   }
   this.setSprite("default")
-  this.walkDirection = side === "l" ? "+=20px" : "-=20px"
+  this.walkForwardDirection = side === "l" ? "+=50px" : "-=50px"
+  this.walkBackwardDirection = side === "l" ? "-=50px" : "+=50px"
 
   this.walkForward = function() {
     console.log(this + " walked forward")
-    var speed = 500
+    var speed = 200
     //this.setSprite("walk")
-    this.$slotID.animate({"left": this.walkDirection},speed)
-    window.setTimeout(function() {
-      this.setWalk()
-    }, 1000)
+    this.$slotID.animate({"left": this.walkForwardDirection},speed)
+    // window.setTimeout(, 1000)
     // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("walk"))
     // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("default"))
     // this.$slotID.animate({"left": this.walkDirection},speed)
   }
+
+  this.walkBackward = function() {
+    console.log(this + " walked forward")
+    var speed = 200
+    //this.setSprite("walk")
+    this.$slotID.animate({"left": this.walkBackwardDirection},speed)
+    // window.setTimeout(, 1000)
+    // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("walk"))
+    // this.$slotID.animate({"left": this.walkDirection},speed,this.setSprite("default"))
+    // this.$slotID.animate({"left": this.walkDirection},speed)
+  }
+
   this.takeTurn = function() {
     this.walkForward()
   }
