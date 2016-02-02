@@ -20,10 +20,13 @@
   function Player(character, side, slot) {
     this.character = character
     this.$slotID = $("#" + side + "-slot-" + slot)
-    this.setSprite = function(state){
+
+    this.setSprite = function(state) {
       console.log("sprite set to " + state)
       this.$slotID.css("background-image", "url('./assets/" + this.character.imagePrefix + "_" + state + ".png')")
     }
+
+    this.setSprite("default")
 
     //
     // WALK ANIMATIONS
@@ -32,7 +35,7 @@
     this.setWalk = function(){
       this.setSprite("walk")
     }
-    this.setSprite("default")
+
     this.walkForwardDirection = side === "l" ? "+=50px" : "-=50px"
     this.walkBackwardDirection = side === "l" ? "-=50px" : "+=50px"
 
@@ -66,7 +69,7 @@
       // console.log("getAction called");
       $('#menu-bar').append('<div class = "action-menu ' + menuPosition + '"></div>')
       $('.action-menu').append('<div class = "menu-item fight">FIGHT</div>')
-      $('.fight').click()
+      $('.fight').click(this.fight.bind(this))
     }
 
     this.takeTurn = function() {
@@ -75,16 +78,28 @@
     }
 
     this.fight = function() {
-      
+      this.turnAction = this.character.attack
+      this.endTurn()
     }
 
-  } // Player constructor ends here
+    this.endTurn = function() {
+      this.walkBackward()
+      game.nextTurn()
+    }
+  } // PLAYER CONSTRUCTOR END
 
+
+ //
+ // CHARACTER CLASS CONSTRUCTORS
+ //
   function Fighter() {
     this.imagePrefix = "fighter"
     this.hp = 300
     this.str = 50
   }
+
+  //
+  // CHARACTER CONSTRUCTOR
 
   function Character() {
     this.attack = function(target){
@@ -99,12 +114,16 @@
 
   Fighter.prototype = new Character()
 
+//
+// GAME OBJECT DECLARATION
+//
+
   var game = {
+    turn: 0,
     players: [new Player(new Fighter(),"l",1), new Player(new Fighter(),"r",1)],
-    takeInputs: function() {
-      for (var i=0; i < this.players.length; i++){
-        players[i].takeTurn()
-      }
+    nextTurn: function() {
+      
     }
   }
+
 // })
