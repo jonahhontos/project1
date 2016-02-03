@@ -17,6 +17,7 @@ var player;
   })
 
   $('#start').click(function(){
+    $(this).fadeOut()
     game.nextTurn()
   })
 

@@ -20,8 +20,9 @@ body {
   margin: 0 auto;
   /*position: absolute;*/
   /*top: 50%;*/
-  margin-top: 4%;
+  /*margin-top: 4%;*/
   /*position: relative;*/
+  /*text-align: center;*/
 }
 
 #bg-image {
@@ -45,10 +46,38 @@ body {
   background-color: #0000ff;*/
 }
 
-.action-menu {
+#hp-l,#hp-r {
+  position: relative;
+  display: inline-block;
+  top: -36px;
+  width: 200px;
+  /*text-align: center;*/
+  /*top: 312px;*/
+}
+
+#hp-l {
+  left: 16px;
+}
+
+#hp-r {
+  left: 642px;
+}
+
+#start {
+  display: inline-block;
+  padding: 0 30px 30px 30px;
+  width: 128px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#start, .action-menu {
   border: 4px ridge #FFF;
   border-radius: 16px;
   background-color: #0000ff;
+}
+
+.action-menu {
   width: 300px;
   vertical-align: -10px;
   padding-bottom: 30px;
