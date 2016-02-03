@@ -27,6 +27,7 @@ var player;
     // SET UP JQUERY OBJECTS AND IMAGES
 
     this.init = function(){
+      this.initialHP = this.hp
       this.$slotID = $("#" + this.side + "-slot-" + this.slot)
       this.$weaponSlot = $("#" + this.side + "-slot-" + this.slot + "-weapon")
       this.$weaponSlot.hide()
@@ -56,6 +57,9 @@ var player;
 
     this.updateHP = function() {
       $('#hp-' + this.side).text(this.hp+"hp")
+      if (this.hp < (this.initialHP / 3)) {
+        this.setSprite("hurt")
+      }
     }
 
     //
@@ -116,6 +120,7 @@ var player;
       $('.action-menu').remove()
       this.walkBackward()
       this.$slotID.promise().done( function(){
+        // this.updateHP()
         game.nextTurn()
       })
     }
