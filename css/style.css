@@ -96,6 +96,19 @@ body {
   text-align: center;
 }
 
+#character-select {
+  position: relative;
+  /*width: 364px;*/
+  left:200px;
+  top: 110px;
+  text-align: center;
+}
+
+#character-select img {
+  position: relative;
+  right: 32px;
+}
+
 .damage {
   position: relative;
   display: inline-block;
