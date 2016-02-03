@@ -230,8 +230,8 @@ win.setAttribute('src','assets/win.mp3')
     this.win = function(){
       // console.log(this.side + " win");
       var side = this.side === 'l' ? "Left" : "Right"
-      $('#win-message').text(side + " Player Wins!")
-      $('#win-message').show()
+      $('#bg-image').append('<div id="win-message" class="window">' + side + ' Player Wins!</div>')
+      // $('#win-message').text(side + " Player Wins!")
       player = this
       var frame = true
       window.setInterval(function(){
