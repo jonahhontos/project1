@@ -11,7 +11,7 @@ var battle = document.createElement('audio')
 battle.setAttribute('src','assets/battle.mp3')
 var win = document.createElement('audio')
 win.setAttribute('src','assets/win.mp3')
-prelude.play()
+// prelude.play()
 
   $('body').on("mouseover",".menu-item",function(){
     $(this).toggleClass("menu-item-hover")
@@ -24,10 +24,10 @@ prelude.play()
   })
 
   $('#start').click(function(){
-    prelude.pause()
+    // prelude.pause()
     $(this).hide()
     game.nextTurn()
-    battle.play()
+    // battle.play()
   })
 
 //
@@ -67,10 +67,17 @@ prelude.play()
     // this.setSprite("default")
 
     this.updateHP = function() {
-      $('#hp-' + this.side).text(this.hp+"hp")
-      if (this.hp < (this.initialHP / 3)) {
-        this.setSprite("hurt")
-        $('#hp-' + this.side).css("color", "#FFFF00")
+      if (this.hp <= 0) {
+        $('#hp-' + this.side).css("color", "#FF0000")
+        $('#hp-' + this.side).text("K.O.")
+        this.setSprite("ko")
+        this.opponent.win()
+      } else {
+        if (this.hp < (this.initialHP / 3)) {
+          this.setSprite("hurt")
+          $('#hp-' + this.side).css("color", "#FFFF00")
+        }
+        $('#hp-' + this.side).text(this.hp+"hp")
       }
     }
 
@@ -185,6 +192,13 @@ prelude.play()
       this.$slotID.animate({"left":moveDirection1},100)
                   .animate({"left":moveDirection2},100, this.setSprite.bind(this))
     }
+
+    // A WINRAR IS YOU
+    this.win = function(){
+      console.log(this.side + " win");
+      win.play()
+    }
+
   } // PLAYER CONSTRUCTOR END
 
 
@@ -226,16 +240,20 @@ prelude.play()
     },
     nextAction: function(){
       game.updateHPs()
-      if (this.turn === this.players.length) {
-        this.turn = 0
-        this.nextTurn()
-      } else {
-        this.players[this.turn].attack()
-        this.turn++
+      // console.log((game.players[0].hp > 0) && (game.players[1].hp > 0))
+      if ((game.players[0].hp > 0) && (game.players[1].hp > 0)){
+        if (this.turn === this.players.length) {
+          this.turn = 0
+          this.nextTurn()
+        } else {
+          this.players[this.turn].attack()
+          this.turn++
+        }
       }
     },
     init: function(){
       game.updateHPs()
+
       for (var i = 0; i < this.players.length; i++){
         this.players[i].init()
         if (this.players[i].side === 'l') {
