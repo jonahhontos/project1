@@ -330,12 +330,31 @@ function BlackMage(side, slot) {
   }
 
   this.castFire = function() {
-
+    player = this
+    var attackStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
+    this.$weaponSlot.css("background-image", "url('./assets/fireball.png')")
+    this.walkForward()
+    this.$slotID.promise().done(function(){
+      player.mp--
+      player.setSprite("use")
+      player.$weaponSlot.show()
+      player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
+        player.$weaponSlot.hide()
+        player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
+        player.$weaponSlot.css("left", "+=720px")
+        player.opponent.takeDamage(attackStrength)
+        player.walkBackward()
+        player.$slotID.promise().done(function(){
+          game.nextAction()
+        })
+      })
+    })
   }
 }
 
   Fighter.prototype = new Player()
   Thief.prototype = new Player()
+  BlackMage.prototype = new Player()
 
 //
 // GAME OBJECT DECLARATION
@@ -388,9 +407,10 @@ function BlackMage(side, slot) {
       game.nextTurn()
     },
     characterSelect: function(){
-      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"></div>')
+      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"></div>')
       $('.fighter').click(game.pickFighter)
       $('.thief').click(game.pickThief)
+      $('.black-mage').click(game.pickBlackMage)
     },
     pickFighter: function(){
       $('#character-select').remove()
@@ -408,6 +428,18 @@ function BlackMage(side, slot) {
       $('#character-select').remove()
       var side = game.turn === 0 ? 'l' : 'r'
       game.players[game.turn] = new Thief(side,1)
+      if (game.turn===0) {
+        game.turn++
+        game.characterSelect()
+      } else {
+        game.turn = 0
+        game.init()
+      }
+    },
+    pickBlackMage: function(){
+      $('#character-select').remove()
+      var side = game.turn === 0 ? 'l' : 'r'
+      game.players[game.turn] = new BlackMage(side,1)
       if (game.turn===0) {
         game.turn++
         game.characterSelect()

@@ -119,6 +119,7 @@ body {
 
 .weapon-slot {
   display: inline-block;
+  background-repeat: no-repeat;
 }
 
 .action-menu {
