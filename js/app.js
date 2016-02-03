@@ -256,14 +256,23 @@ win.setAttribute('src','assets/win.mp3')
     this.str = 50
   }
 
+  function Thief(side, slot) {
+    this.side = side
+    this.slot = slot
+    this.imagePrefix = "thief"
+    this.hp = 250
+    this.str = 40
+  }
+
   Fighter.prototype = new Player()
+  Thief.prototype = new Player()
 
 //
 // GAME OBJECT DECLARATION
 //
   var game = {
     turn: 0,
-    players: [new Fighter("l",1), new Fighter("r",1)],
+    players: [new Thief("l",1), new Thief("r",1)],
     updateHPs: function() {
       for (var i=0; i < game.players.length; i++) {
         game.players[i].updateHP()
