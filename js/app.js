@@ -4,6 +4,8 @@
   // MOUSEOVER EFFECT FOR MENU ITEMS
   //        Puts cursor.png in bg of .menu-item with a class
   //
+var player;
+
   $('body').on("mouseover",".menu-item",function(){
     $(this).toggleClass("menu-item-hover")
     // console.log("mouseover on " + this)
@@ -28,7 +30,7 @@
       this.$weaponSlot = $("#" + this.side + "-slot-" + this.slot + "-weapon")
       this.$weaponSlot.hide()
       this.$weaponSlot.css("background-image", "url('./assets/" + this.imagePrefix + "_weapon.png')")
-      console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
+      // console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
@@ -36,9 +38,9 @@
 
     this.setSprite = function(state) {
       if (state===undefined){state="default"}
-      console.log("sprite set to " + state)
+      // console.log("sprite set to " + state)
       this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_" + state + ".png')")
-      console.log("url('./assets/" + this.imagePrefix + "_" + state + ".png')")
+      // console.log("url('./assets/" + this.imagePrefix + "_" + state + ".png')")
     }
 
     this.sayImagePrefix = function() {
@@ -59,25 +61,29 @@
     }
 
     this.walkForward = function() {
-      console.log(this + " walked forward")
+      // console.log(this + " walked forward")
       var speed = 50
-      this.$slotID.animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
-                  .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
-                  .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+      // this.$slotID.promise().done(function() {
+        this.$slotID.animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+                    .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+                    .animate({"left": this.walkForwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkForwardDirection},speed, this.setSprite.bind(this))
+                // })
     }
 
     this.walkBackward = function() {
-      console.log(this + " walked forward")
+      // console.log(this + " walked forward")
       var speed = 50
-      this.$slotID.animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
-                  .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
-                  .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
-                  .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+      // this.$slotID.promise().done(function() {
+        this.$slotID.animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+                    .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+                    .animate({"left": this.walkBackwardDirection},speed, this.setWalk.bind(this))
+                    .animate({"left": this.walkBackwardDirection},speed, this.setSprite.bind(this))
+                  // })
     }
 
     //
@@ -104,17 +110,45 @@
     this.endTurn = function() {
       $('.action-menu').remove()
       this.walkBackward()
-      game.nextTurn()
+      this.$slotID.promise().done( function(){
+        game.nextTurn()
+      })
     }
 
     //
     // EXECUTE ACTIONS
     //
     this.attack = function(target){
+      // while (player !== undefined) {}
       var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
-      target.takeDamage(attackStrength)
+      console.log("attack called");
+      var speed = 80
+      player = this
+      this.walkForward()
+      this.$slotID.promise().done( function() {
+        player.setSprite("attack")
+        player.$weaponSlot.show()
+        player.$weaponSlot.animate({"top": "+=16px","right":"+=16px"}, speed)
+                          .animate({"top": "-=16px","right":"-=16px"}, speed/2)
+                          .animate({"top": "+=16px","right":"+=16px"}, speed)
+                          .animate({"top": "-=16px","right":"-=16px"}, speed/2,
+                          function (){
+                            player.$weaponSlot.hide()
+                            player.setSprite()
+                            player.walkBackward()
+                            player.$slotID.promise().done(function(){
+                              game.nextAction()
+                              console.log("animation done");
+                            })
+                          })
+      })
+
+
+      // target.takeDamage(attackStrength)
       // console.log(attackStrength)
+      // player = undefined
     }
+
     this.takeDamage = function(damageAmount) {
       this.hp -= damageAmount
     }
@@ -147,23 +181,26 @@
     },
     nextTurn: function() {
       game.updateHPs()
-      console.log("before: " + this.turn)
+      // console.log("before: " + this.turn)
       if (this.turn === this.players.length) {
         this.turn = 0
-        this.doActions()
+        this.nextAction()
       } else {
         this.players[this.turn].takeTurn()
         this.turn++
       }
-      console.log("after: " + this.turn);
+      // console.log("after: " + this.turn);
     },
-    doActions: function(){
-      console.log("doActions")
-      for (var i = 0; i < this.players.length; i++){
-        // players[i].doAction
-      }
+    nextAction: function(){
       game.updateHPs()
-      },
+      if (this.turn === this.players.length) {
+        this.turn = 0
+        this.nextTurn()
+      } else {
+        this.players[this.turn].attack()
+        this.turn++
+      }
+    },
     init: function(){
       game.updateHPs()
       for (var i = 0; i < this.players.length; i++){
