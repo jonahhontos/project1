@@ -120,6 +120,7 @@ win.setAttribute('src','assets/win.mp3')
       $('#menu-bar').append('<div class = "action-menu ' + menuPosition + '"></div>')
       $('.action-menu').append('<div class = "menu-item fight">FIGHT</div>')
       $('.fight').click(this.fight.bind(this))
+      this.addUniqueAction()
       if (this.potions > 0)
       {
         $('.action-menu').append('<div class = "menu-item potion">POTION x' + this.potions + '</div>')
@@ -254,6 +255,9 @@ win.setAttribute('src','assets/win.mp3')
     this.imagePrefix = "fighter"
     this.hp = 300
     this.str = 50
+    this.addUniqueAction = function(){
+
+    }
   }
 
   function Thief(side, slot) {
@@ -262,6 +266,22 @@ win.setAttribute('src','assets/win.mp3')
     this.imagePrefix = "thief"
     this.hp = 250
     this.str = 40
+
+    this.addUniqueAction = function(){
+      if (this.opponent.potions > 0) {
+        $('.action-menu').append('<div class = "menu-item steal">STEAL</div>')
+        $('.steal').click(this.steal.bind(this))
+      }
+    }
+
+    this.steal = function(){
+      this.turnAction = this.stealItem
+      this.endTurn()
+    }
+
+    this.stealItem = function() {
+
+    }
   }
 
   Fighter.prototype = new Player()
