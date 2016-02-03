@@ -192,7 +192,9 @@ win.setAttribute('src','assets/win.mp3')
     // A WINRAR IS YOU
     this.win = function(){
       // console.log(this.side + " win");
-
+      var side = this.side === 'l' ? "Left" : "Right"
+      $('#win-message').text(side + " Player Wins!")
+      $('#win-message').show()
       // win.play()
 
 
