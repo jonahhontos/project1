@@ -355,7 +355,7 @@ function BlackMage(side, slot) {
 function WhiteMage(side, slot) {
   this.side = side
   this.slot = slot
-  this.imagePrefix = "black_mage"
+  this.imagePrefix = "white_mage"
   this.hp = 200
   this.str = 35
   this.mag = 150
@@ -434,10 +434,11 @@ function WhiteMage(side, slot) {
       game.nextTurn()
     },
     characterSelect: function(){
-      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"></div>')
+      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"></div>')
       $('.fighter').click(game.pickFighter)
       $('.thief').click(game.pickThief)
       $('.black-mage').click(game.pickBlackMage)
+      $('.white-mage').click(game.pickWhiteMage)
     },
     pickFighter: function(){
       $('#character-select').remove()
@@ -467,6 +468,18 @@ function WhiteMage(side, slot) {
       $('#character-select').remove()
       var side = game.turn === 0 ? 'l' : 'r'
       game.players[game.turn] = new BlackMage(side,1)
+      if (game.turn===0) {
+        game.turn++
+        game.characterSelect()
+      } else {
+        game.turn = 0
+        game.init()
+      }
+    },
+    pickWhiteMage: function(){
+      $('#character-select').remove()
+      var side = game.turn === 0 ? 'l' : 'r'
+      game.players[game.turn] = new WhiteMage(side,1)
       if (game.turn===0) {
         game.turn++
         game.characterSelect()
