@@ -77,6 +77,26 @@ body {
   background-color: #0000ff;
 }
 
+#l-slot-1-damage {
+  left: 28px;
+}
+
+#r-slot-1-damage {
+  left: 780px;
+}
+
+.damage {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  top: -172px;
+  width:64px;
+}
+
+.weapon-slot {
+  display: inline-block;
+}
+
 .action-menu {
   width: 300px;
   vertical-align: -10px;
