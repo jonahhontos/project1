@@ -5,6 +5,13 @@
   //        Puts cursor.png in bg of .menu-item with a class
   //
 var player;
+var prelude = document.createElement('audio')
+prelude.setAttribute('src','assets/prelude.mp3')
+var battle = document.createElement('audio')
+battle.setAttribute('src','assets/battle.mp3')
+var win = document.createElement('audio')
+win.setAttribute('src','assets/win.mp3')
+prelude.play()
 
   $('body').on("mouseover",".menu-item",function(){
     $(this).toggleClass("menu-item-hover")
@@ -17,8 +24,10 @@ var player;
   })
 
   $('#start').click(function(){
+    prelude.pause()
     $(this).hide()
     game.nextTurn()
+    battle.play()
   })
 
 //
