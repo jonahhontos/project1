@@ -257,6 +257,8 @@ win.setAttribute('src','assets/win.mp3')
     this.imagePrefix = "fighter"
     this.hp = 300
     this.str = 50
+    this.critPercent = 4
+
     this.addUniqueAction = function(){
 
     }
@@ -268,6 +270,7 @@ win.setAttribute('src','assets/win.mp3')
     this.imagePrefix = "thief"
     this.hp = 250
     this.str = 40
+    this.critPercent = 30
 
     this.addUniqueAction = function(){
       if (this.opponent.potions > 0) {
@@ -316,6 +319,7 @@ function BlackMage(side, slot) {
   this.str = 25
   this.mag = 150
   this.mp = 2
+  this.critPercent = 8
 
   this.addUniqueAction = function(){
     if (this.mp > 0) {
@@ -360,6 +364,7 @@ function WhiteMage(side, slot) {
   this.str = 35
   this.mag = 150
   this.mp = 3
+  this.critPercent = 8
 
   this.addUniqueAction = function(){
     if (this.mp > 0) {
