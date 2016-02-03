@@ -280,9 +280,30 @@ win.setAttribute('src','assets/win.mp3')
     }
 
     this.stealItem = function() {
-
-    }
+      player = this
+      var adjust = this.side === 'l' ? "120px" : "-120px"
+      this.walkForward()
+      this.$slotID.promise().done(function(){
+        player.setSprite("use")
+        player.$damage.text("STOLE POTION!")
+        player.$damage.css("opacity", "1.0")
+        player.$damage.css("color","#00FF00")
+        player.$damage.css("left","+=" + adjust)
+        player.potions += 1
+        player.opponent.potions -= 1
+        player.$damage.animate({"top": "-=48px"},350)
+                    .animate({"opacity": "0"})
+                    .animate({"top": "+=48px"}, 0, function(){
+                      player.$damage.css("color","#FFFFFF")
+                      player.$damage.css("left","-=" + adjust)
+                      player.walkBackward()
+                      player.$slotID.promise().done(function(){
+                        game.nextAction()
+                      })
+                    })
+    })
   }
+}
 
   Fighter.prototype = new Player()
   Thief.prototype = new Player()
