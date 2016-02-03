@@ -1,8 +1,7 @@
 // $(document).ready(function() {
 
   //
-  // MOUSEOVER EFFECT FOR MENU ITEMS
-  //        Puts cursor.png in bg of .menu-item with a class
+  // GLOBALS
   //
 var player;
 var prelude = document.createElement('audio')
@@ -23,9 +22,12 @@ win.setAttribute('src','assets/win.mp3')
     // console.log("mouseout on " + this)
   })
 
+  $('#win-message').hide()
+
   $('#start').click(function(){
     // prelude.pause()
     $(this).hide()
+    // game.init()
     game.nextTurn()
     // battle.play()
   })
@@ -59,12 +61,6 @@ win.setAttribute('src','assets/win.mp3')
       this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_" + state + ".png')")
       // console.log("url('./assets/" + this.imagePrefix + "_" + state + ".png')")
     }
-
-    this.sayImagePrefix = function() {
-      return this.imagePrefix
-    }
-
-    // this.setSprite("default")
 
     this.updateHP = function() {
       if (this.hp <= 0) {
@@ -195,8 +191,11 @@ win.setAttribute('src','assets/win.mp3')
 
     // A WINRAR IS YOU
     this.win = function(){
-      console.log(this.side + " win");
+      // console.log(this.side + " win");
+
       // win.play()
+
+
     }
 
   } // PLAYER CONSTRUCTOR END
