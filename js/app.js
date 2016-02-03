@@ -27,8 +27,10 @@ win.setAttribute('src','assets/win.mp3')
   $('#start').click(function(){
     // prelude.pause()
     $(this).hide()
+    game.characterSelect()
+    //
     // game.init()
-    game.nextTurn()
+    // game.nextTurn()
     // battle.play()
   })
 
@@ -347,17 +349,46 @@ win.setAttribute('src','assets/win.mp3')
     },
     init: function(){
       game.updateHPs()
-
-      for (var i = 0; i < this.players.length; i++){
-        this.players[i].init()
-        if (this.players[i].side === 'l') {
-          this.players[i].setOpponent(this.players[1])
+      for (var i = 0; i < game.players.length; i++){
+        game.players[i].init()
+        if (game.players[i].side === 'l') {
+          game.players[i].setOpponent(game.players[1])
         } else {
-          this.players[i].setOpponent(this.players[0])
+          game.players[i].setOpponent(game.players[0])
         }
+      }
+      game.nextTurn()
+    },
+    characterSelect: function(){
+      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"></div>')
+      $('.fighter').click(game.pickFighter)
+      $('.thief').click(game.pickThief)
+    },
+    pickFighter: function(){
+      $('#character-select').remove()
+      var side = game.turn === 0 ? 'l' : 'r'
+      game.players[game.turn] = new Fighter(side,1)
+      if (game.turn===0) {
+        game.turn++
+        game.characterSelect()
+      } else {
+        game.turn = 0
+        game.init()
+      }
+    },
+    pickThief: function(){
+      $('#character-select').remove()
+      var side = game.turn === 0 ? 'l' : 'r'
+      game.players[game.turn] = new Thief(side,1)
+      if (game.turn===0) {
+        game.turn++
+        game.characterSelect()
+      } else {
+        game.turn = 0
+        game.init()
       }
     }
   }
-game.init()
+// game.init()
 
 // })
