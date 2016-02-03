@@ -196,7 +196,7 @@ win.setAttribute('src','assets/win.mp3')
     // A WINRAR IS YOU
     this.win = function(){
       console.log(this.side + " win");
-      win.play()
+      // win.play()
     }
 
   } // PLAYER CONSTRUCTOR END
