@@ -25,6 +25,7 @@ var player;
 //
   function Player() {
     // SET UP JQUERY OBJECTS AND IMAGES
+
     this.init = function(){
       this.$slotID = $("#" + this.side + "-slot-" + this.slot)
       this.$weaponSlot = $("#" + this.side + "-slot-" + this.slot + "-weapon")
@@ -34,6 +35,10 @@ var player;
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
+    }
+
+    this.setOpponent = function(opponent) {
+      this.opponent = opponent
     }
 
     this.setSprite = function(state) {
@@ -118,16 +123,17 @@ var player;
     //
     // EXECUTE ACTIONS
     //
-    this.attack = function(target){
+    this.attack = function(){
       // while (player !== undefined) {}
       var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
-      console.log("attack called");
+      // console.log("attack called");
       var speed = 80
       player = this
       this.walkForward()
       this.$slotID.promise().done( function() {
         player.setSprite("attack")
         player.$weaponSlot.show()
+        player.opponent.takeDamage(attackStrength)
         player.$weaponSlot.animate({"top": "+=16px","right":"+=16px"}, speed)
                           .animate({"top": "-=16px","right":"-=16px"}, speed/2)
                           .animate({"top": "+=16px","right":"+=16px"}, speed)
@@ -138,7 +144,7 @@ var player;
                             player.walkBackward()
                             player.$slotID.promise().done(function(){
                               game.nextAction()
-                              console.log("animation done");
+                              // console.log("animation done");
                             })
                           })
       })
@@ -205,6 +211,11 @@ var player;
       game.updateHPs()
       for (var i = 0; i < this.players.length; i++){
         this.players[i].init()
+        if (this.players[i].side === 'l') {
+          this.players[i].setOpponent(this.players[1])
+        } else {
+          this.players[i].setOpponent(this.players[0])
+        }
       }
     }
   }
