@@ -161,7 +161,12 @@ var player;
     }
 
     this.takeDamage = function(damageAmount) {
+      var moveDirection1 = this.side === 'r' ? "+=36px" : "-=36px"
+      var moveDirection2 = this.side === 'r' ? "-=36px" : "+=36px"
       this.hp -= damageAmount
+      this.setSprite("hurt")
+      this.$slotID.animate({"left":moveDirection1},100)
+                  .animate({"left":moveDirection2},100, this.setSprite.bind(this))
     }
   } // PLAYER CONSTRUCTOR END
 
