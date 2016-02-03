@@ -25,7 +25,6 @@ win.setAttribute('src','assets/win.mp3')
   $('#win-message').hide()
 
   $('#start').click(function(){
-    // prelude.pause()
     $(this).hide()
     game.characterSelect()
     //
@@ -240,6 +239,7 @@ win.setAttribute('src','assets/win.mp3')
         player.setSprite(frame === false ? "default" : "use")
         frame = !frame
       }, 250)
+      // battle.pause()
       // win.play()
 
 
@@ -357,6 +357,8 @@ win.setAttribute('src','assets/win.mp3')
           game.players[i].setOpponent(game.players[0])
         }
       }
+      // prelude.pause()
+      // battle.start()
       game.nextTurn()
     },
     characterSelect: function(){
