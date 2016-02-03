@@ -352,9 +352,36 @@ function BlackMage(side, slot) {
   }
 }
 
+function WhiteMage(side, slot) {
+  this.side = side
+  this.slot = slot
+  this.imagePrefix = "black_mage"
+  this.hp = 200
+  this.str = 35
+  this.mag = 150
+  this.mp = 3
+
+  this.addUniqueAction = function(){
+    if (this.mp > 0) {
+      $('.action-menu').append('<div class = "menu-item heal">HEAL x' + this.mp + '</div>')
+      $('.heal').click(this.heal.bind(this))
+    }
+  }
+
+  this.heal = function(){
+    this.turnAction = this.castHeal
+    this.endTurn()
+  }
+
+  this.castHeal = function() {
+
+  }
+}
+
   Fighter.prototype = new Player()
   Thief.prototype = new Player()
   BlackMage.prototype = new Player()
+  WhiteMage.prototype = new Player()
 
 //
 // GAME OBJECT DECLARATION
