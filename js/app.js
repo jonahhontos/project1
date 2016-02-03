@@ -308,6 +308,32 @@ win.setAttribute('src','assets/win.mp3')
   }
 }
 
+function BlackMage(side, slot) {
+  this.side = side
+  this.slot = slot
+  this.imagePrefix = "black_mage"
+  this.hp = 200
+  this.str = 25
+  this.mag = 150
+  this.mp = 2
+
+  this.addUniqueAction = function(){
+    if (this.mp > 0) {
+      $('.action-menu').append('<div class = "menu-item fire">FIRE x' + this.mp + '</div>')
+      $('.fire').click(this.fire.bind(this))
+    }
+  }
+
+  this.fire = function(){
+    this.turnAction = this.castFire
+    this.endTurn()
+  }
+
+  this.castFire = function() {
+
+  }
+}
+
   Fighter.prototype = new Player()
   Thief.prototype = new Player()
 
