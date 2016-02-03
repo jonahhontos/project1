@@ -40,6 +40,7 @@ win.setAttribute('src','assets/win.mp3')
 
     this.init = function(){
       this.initialHP = this.hp
+      this.potions = 2
       this.$slotID = $("#" + this.side + "-slot-" + this.slot)
       this.$weaponSlot = $("#" + this.side + "-slot-" + this.slot + "-weapon")
       this.$weaponSlot.hide()
@@ -119,6 +120,11 @@ win.setAttribute('src','assets/win.mp3')
       $('#menu-bar').append('<div class = "action-menu ' + menuPosition + '"></div>')
       $('.action-menu').append('<div class = "menu-item fight">FIGHT</div>')
       $('.fight').click(this.fight.bind(this))
+      if (this.potions > 0)
+      {
+        $('.action-menu').append('<div class = "menu-item potion">POTION x' + this.potions + '</div>')
+        $('.potion').click(this.potion.bind(this))
+      }
     }
 
     this.takeTurn = function() {
@@ -128,6 +134,11 @@ win.setAttribute('src','assets/win.mp3')
 
     this.fight = function() {
       this.turnAction = this.attack
+      this.endTurn()
+    }
+
+    this.potion = function() {
+      this.turnAction = this.usePotion
       this.endTurn()
     }
 
@@ -173,6 +184,31 @@ win.setAttribute('src','assets/win.mp3')
       // target.takeDamage(attackStrength)
       // console.log(attackStrength)
       // player = undefined
+    }
+
+    this.usePotion = function(){
+      player = this
+      var adjust = this.side === 'l' ? "120px" : "-120px"
+      this.potions -= 1
+      this.walkForward()
+      this.$slotID.promise().done(function(){
+        player.setSprite("use")
+        player.$damage.css("opacity", "1.0")
+        player.$damage.css("color","#00FF00")
+        player.$damage.css("left","+=" + adjust)
+        player.$damage.text("100")
+        player.hp += 100
+        player.$damage.animate({"top": "-=48px"},350)
+                    .animate({"opacity": "0"})
+                    .animate({"top": "+=48px"}, 0, function(){
+                      player.$damage.css("color","#FFFFFF")
+                      player.$damage.css("left","-=" + adjust)
+                      player.walkBackward()
+                      player.$slotID.promise().done(function(){
+                        game.nextAction()
+                      })
+                    })
+      })
     }
 
     this.takeDamage = function(damageAmount) {
@@ -253,7 +289,7 @@ win.setAttribute('src','assets/win.mp3')
           this.turn = 0
           this.nextTurn()
         } else {
-          this.players[this.turn].attack()
+          this.players[this.turn].turnAction()
           this.turn++
         }
       }
