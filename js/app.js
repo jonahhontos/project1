@@ -217,7 +217,7 @@ win.setAttribute('src','assets/win.mp3')
       var moveDirection2 = this.side === 'r' ? "-=36px" : "+=36px"
       this.hp -= damageAmount
       this.$damage.css("opacity", "1.0")
-      this.$damage.text(damageAmount)
+      this.$damage.text(damageAmount > 0 ? damageAmount : "")
       this.$damage.animate({"top": "-=48px"},350)
                   .animate({"opacity": "0"})
                   .animate({"top": "+=48px"}, 0)
@@ -285,6 +285,7 @@ win.setAttribute('src','assets/win.mp3')
       this.walkForward()
       this.$slotID.promise().done(function(){
         player.setSprite("use")
+        player.opponent.takeDamage(0)
         player.$damage.text("STOLE POTION!")
         player.$damage.css("opacity", "1.0")
         player.$damage.css("color","#00FF00")
