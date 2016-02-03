@@ -195,6 +195,12 @@ win.setAttribute('src','assets/win.mp3')
       var side = this.side === 'l' ? "Left" : "Right"
       $('#win-message').text(side + " Player Wins!")
       $('#win-message').show()
+      player = this
+      var frame = true
+      window.setInterval(function(){
+        player.setSprite(frame === false ? "default" : "use")
+        frame = !frame
+      }, 250)
       // win.play()
 
 
