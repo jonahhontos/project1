@@ -17,7 +17,7 @@ var player;
   })
 
   $('#start').click(function(){
-    $(this).fadeOut()
+    $(this).hide()
     game.nextTurn()
   })
 
@@ -34,6 +34,7 @@ var player;
       this.$weaponSlot.hide()
       this.$weaponSlot.css("background-image", "url('./assets/" + this.imagePrefix + "_weapon.png')")
       // console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
+      this.$damage = $("#" + this.side + "-slot-" + this.slot + "-damage")
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
@@ -166,6 +167,11 @@ var player;
       var moveDirection1 = this.side === 'r' ? "+=36px" : "-=36px"
       var moveDirection2 = this.side === 'r' ? "-=36px" : "+=36px"
       this.hp -= damageAmount
+      this.$damage.css("opacity", "1.0")
+      this.$damage.text(damageAmount)
+      this.$damage.animate({"top": "-=48px"},350)
+                  .animate({"opacity": "0"})
+                  .animate({"top": "+=48px"}, 0)
       this.setSprite("hurt")
       this.$slotID.animate({"left":moveDirection1},100)
                   .animate({"left":moveDirection2},100, this.setSprite.bind(this))
