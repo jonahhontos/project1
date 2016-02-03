@@ -158,7 +158,12 @@ win.setAttribute('src','assets/win.mp3')
     //
     this.attack = function(){
       // while (player !== undefined) {}
-      var attackStrength = Math.floor((Math.random()*(this.str/2)) + this.str * 0.75)
+      var mod = this.str
+      if (Math.floor(Math.random() * 100) < this.critPercent) {
+        mod *= 2
+        this.opponent.$damage.css("color", "#FF0000")
+      }
+      var attackStrength = Math.floor((Math.random()*(mod/2)) + mod * 0.75)
       // console.log("attack called");
       var speed = 80
       player = this
@@ -176,6 +181,7 @@ win.setAttribute('src','assets/win.mp3')
                             player.setSprite()
                             player.walkBackward()
                             player.$slotID.promise().done(function(){
+                              player.opponent.$damage.css("color", "#FFFFFF")
                               game.nextAction()
                               // console.log("animation done");
                             })
