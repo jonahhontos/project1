@@ -60,6 +60,7 @@ var player;
       $('#hp-' + this.side).text(this.hp+"hp")
       if (this.hp < (this.initialHP / 3)) {
         this.setSprite("hurt")
+        $('#hp-' + this.side).css("color", "#FFFF00")
       }
     }
 
