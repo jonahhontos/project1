@@ -526,6 +526,16 @@ function pickFire(){
 
 function castFire(){
   player = this
+  var topOffset
+  // console.log(this.opponent.slot + " " + this. slot);
+  if (this.opponent.slot === this.slot) {
+    topOffset = "0"
+  } else if ((this.opponent.slot === 1) && (this.slot === 2)) {
+    topOffset = "-=65px"
+  } else {
+    topOffset = "+=80px"
+  }
+  // console.log(topOffset);
   var attackStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
   this.$weaponSlot.css("background-image", "url('./assets/fireball.png')")
   this.walkForward()
@@ -534,10 +544,11 @@ function castFire(){
     player.setSprite("use")
     player.$weaponSlot.show()
     fire.play()
-    player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
+    // $('#row-2').css("overflow", "visible")
+    player.$weaponSlot.animate({"left":"-=700px", "top":topOffset, "opacity":"0.3"}, 300, "linear", function(){
       player.$weaponSlot.hide()
       player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
-      player.$weaponSlot.css("left", "")
+      player.$weaponSlot.css({"left": "", "top":"", "opacity":"1.0"})
       // player.$weaponSlot.css("right", "42px")
       player.opponent.takeDamage(attackStrength)
       player.walkBackward()

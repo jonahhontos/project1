@@ -132,6 +132,7 @@ body {
 #row-2 {
   position: relative;
   top: -112px;
+  /*overflow: visible;*/
 }
 
 .cursor {
