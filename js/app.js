@@ -621,7 +621,7 @@ function RedMage(side, slot) {
     },
     pickFighter: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
+      var side = game.turn === (0 || 2) ? 'l' : 'r'
       game.players[game.turn] = new Fighter(side,1)
       if (game.turn===0) {
         game.turn++
@@ -690,5 +690,8 @@ function RedMage(side, slot) {
         game.turn = 0
         game.init()
       }
+    },
+    getSide: function(){
+      return game.turn === 0 ? 'l' : 'r'
     }
   }

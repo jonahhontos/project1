@@ -15,7 +15,7 @@ body {
 
 #container {
   width: 960px;
-  height: 672px;
+  height: 744px;
   background-color: #000;
   margin: 0 auto;
   /*position: absolute;*/
@@ -33,7 +33,7 @@ body {
 }
 
 #playing-field {
-  height: 248px;
+  height: 306px;
   width: 100%;
   /*background-color: #333;*/
 }
@@ -46,7 +46,7 @@ body {
   background-color: #0000ff;*/
 }
 
-#hp-l-1,#hp-r-1 {
+#hp-l-1,#hp-r-1,#hp-l-2,#hp-r-2 {
   position: relative;
   display: inline-block;
   top: -36px;
@@ -55,15 +55,19 @@ body {
   /*top: 312px;*/
 }
 
-#hp-l-1 {
+#hp-l-1, #hp-l-2 {
   left: 16px;
 }
 
-#hp-r-1 {
+#hp-r-1, #hp-r-2 {
   left: 642px;
 }
 
-#l-slot-2, #r-slot2 {
+#hp-l-2,#hp-r-2 {
+  top: -146px;
+}
+
+#l-slot-2, #r-slot-2 {
   background-image: url("../assets/fighter_sheet.png");
   background-position: 0 0;
 }
@@ -107,11 +111,17 @@ body {
   left:200px;
   top: 110px;
   text-align: center;
+  z-index: 10;
 }
 
 #character-select img {
   position: relative;
   right: 32px;
+}
+
+#row-2 {
+  position: relative;
+  top: -112px;
 }
 
 .damage {
