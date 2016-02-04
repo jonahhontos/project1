@@ -555,22 +555,27 @@ function pickHeal(){
 function castHeal(){
   player = this
   var healStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
-  var adjust = this.side === 'l' ? "120px" : "-120px"
+  if (this.opponent === this) {
+    var adjust = this.side === 'l' ? "120px" : "-120px"
+  } else {
+    var adjust = "0"
+  }
+  var target = this.opponent
   this.mp--
   this.walkForward()
   this.$slotID.promise().done(function(){
     heal.play()
     player.setSprite("use")
-    player.$damage.css("opacity", "1.0")
-    player.$damage.css("color","#00FF00")
-    player.$damage.css("left","+=" + adjust)
-    player.$damage.text(healStrength)
-    player.hp += healStrength
-    player.$damage.animate({"top": "-=48px"},350)
+    target.$damage.css("opacity", "1.0")
+    target.$damage.css("color","#00FF00")
+    target.$damage.css("left","+=" + adjust)
+    target.$damage.text(healStrength)
+    target.hp += healStrength
+    target.$damage.animate({"top": "-=48px"},350)
                 .animate({"opacity": "0"})
                 .animate({"top": "+=48px"}, 0, function(){
-                  player.$damage.css("color","#FFFFFF")
-                  player.$damage.css("left","-=" + adjust)
+                  target.$damage.css("color","#FFFFFF")
+                  target.$damage.css("left","-=" + adjust)
                   player.walkBackward()
                   player.$slotID.promise().done(function(){
                     game.nextAction()
