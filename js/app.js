@@ -61,6 +61,7 @@ prelude.play()
       this.$weaponSlot.css("background-image", "url('./assets/" + this.imagePrefix + "_weapon.png')")
       // console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
       this.$damage = $("#" + this.side + "-slot-" + this.slot + "-damage")
+      this.$hp = $('#hp-' + this.side)
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
@@ -79,16 +80,18 @@ prelude.play()
 
     this.updateHP = function() {
       if (this.hp <= 0) {
-        $('#hp-' + this.side).css("color", "#FF0000")
-        $('#hp-' + this.side).text("K.O.")
+        this.$hp.css("color", "#FF0000")
+        this.$hp.text("K.O.")
         this.setSprite("ko")
         this.opponent.win()
       } else {
         if (this.hp < (this.initialHP / 3)) {
           this.setSprite("hurt")
-          $('#hp-' + this.side).css("color", "#FFFF00")
+          this.$hp.css("color", "#FFFF00")
+        } else {
+          this.$hp.css("color", "#FFFFFF")
         }
-        $('#hp-' + this.side).text(this.hp+"hp")
+        this.$hp.text(this.hp+"hp")
       }
     }
 
@@ -569,7 +572,6 @@ function RedMage(side, slot) {
       }
     },
     init: function(){
-      game.updateHPs()
       for (var i = 0; i < game.players.length; i++){
         game.players[i].init()
         if (game.players[i].side === 'l') {
