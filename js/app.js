@@ -500,6 +500,7 @@ function RedMage(side, slot) {
 
   Fighter.prototype = new Player()
   Thief.prototype = new Player()
+  BlackBelt.prototype = new Player()
   BlackMage.prototype = new Player()
   WhiteMage.prototype = new Player()
   RedMage.prototype = new Player()
@@ -555,9 +556,10 @@ function RedMage(side, slot) {
       game.nextTurn()
     },
     characterSelect: function(){
-      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"><img src="assets/red_mage_default.png" class="menu-item red-mage"></div>')
+      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><img src="assets/black_belt_default.png" class="menu-item black-belt"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"><img src="assets/red_mage_default.png" class="menu-item red-mage"></div>')
       $('.fighter').click(game.pickFighter)
       $('.thief').click(game.pickThief)
+      $('.black-belt').click(game.pickBlackBelt)
       $('.black-mage').click(game.pickBlackMage)
       $('.white-mage').click(game.pickWhiteMage)
       $('.red-mage').click(game.pickRedMage)
@@ -578,6 +580,18 @@ function RedMage(side, slot) {
       $('#character-select').remove()
       var side = game.turn === 0 ? 'l' : 'r'
       game.players[game.turn] = new Thief(side,1)
+      if (game.turn===0) {
+        game.turn++
+        game.characterSelect()
+      } else {
+        game.turn = 0
+        game.init()
+      }
+    },
+    pickBlackBelt: function(){
+      $('#character-select').remove()
+      var side = game.turn === 0 ? 'l' : 'r'
+      game.players[game.turn] = new BlackBelt(side,1)
       if (game.turn===0) {
         game.turn++
         game.characterSelect()
