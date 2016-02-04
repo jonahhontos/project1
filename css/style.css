@@ -80,12 +80,16 @@ body {
   text-align: center;
 }
 
-#l-slot-1-damage {
+#l-slot-1-damage, #l-slot-2-damage {
   left: 28px;
 }
 
-#r-slot-1-damage {
+#r-slot-1-damage, #r-slot-2-damage {
   left: 780px;
+}
+
+#l-slot-2-damage, #r-slot-2-damage {
+  top: -282px;
 }
 
 #l-slot-1, #l-slot-2 {
@@ -122,6 +126,12 @@ body {
 #row-2 {
   position: relative;
   top: -112px;
+}
+
+.cursor {
+  position: relative;
+  top: 32px;
+  left: -72px;
 }
 
 .damage {
@@ -180,6 +190,7 @@ body {
   /*background-image: url("../assets/fighter_default.png");*/
   background-position: center;
   background-repeat: no-repeat;
+  z-index: 2;
 }
 
 .weapon-slot {

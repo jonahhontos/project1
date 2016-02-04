@@ -64,11 +64,15 @@ prelude.play()
       this.$hp = $('#hp-' + this.side + "-" + this.slot)
       this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_sheet.png')")
       this.setSprite()
+      this.$slotID.append('<img src="assets/cursor.png" class="cursor">')
+      this.$cursor = this.$slotID.children('.cursor')
+      this.$cursor.hide()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
     }
 
     this.setOpponent = function(opponent) {
+      console.log(opponent);
       this.opponent = opponent
     }
 
@@ -169,14 +173,55 @@ prelude.play()
       }
     }
 
+    this.getOpponent = function(){
+      player = this
+      if (this.side === 'l'){
+        var $targets = $('#r-slot-1,#r-slot-2')
+      } else {
+        var $targets = $('#l-slot-1,#l-slot-2')
+      }
+      $targets.css("z-index", 15)
+      $targets.on("mouseover", function(){
+        $(this).children('.cursor').show()
+      })
+      $targets.on("mouseout", function(){
+        $(this).children('.cursor').hide()
+      })
+      $targets.on("click", function(){
+        select.play()
+        $targets.css("z-index", 5)
+        $(this).children('.cursor').hide()
+        $targets.off("mouseover")
+        $targets.off("mouseout")
+        $targets.off("click")
+        switch(event.target.id){
+          case "l-slot-1":
+            player.setOpponent(game.players[0])
+            break
+          case "r-slot-1":
+            player.setOpponent(game.players[1])
+            break
+          case "l-slot-2":
+            player.setOpponent(game.players[2])
+            break
+          case "r-slot-2":
+            player.setOpponent(game.players[3])
+            break
+        }
+        player.endTurn()
+      })
+    }
+
     this.takeTurn = function() {
       this.walkForward()
       this.getAction()
     }
 
     this.fight = function() {
+      $('.action-menu').remove()
       this.turnAction = this.attack
-      this.endTurn()
+      this.getOpponent()
+      // this.endTurn()
     }
 
     this.potion = function() {
@@ -185,7 +230,6 @@ prelude.play()
     }
 
     this.endTurn = function() {
-      $('.action-menu').remove()
       this.walkBackward()
       this.$slotID.promise().done( function(){
         // this.updateHP()
@@ -324,7 +368,13 @@ prelude.play()
     this.critPercent = 40
 
     this.addUniqueAction = function(){
-      if (this.opponent.potions > 0) {
+      var potsToSteal = false
+      if (this.side === 'l') {
+        potsToSteal = (game.players[1].potions > 0) && (game.players[3].potions > 0)
+      } else {
+        potsToSteal = (game.players[0].potions > 0) && (game.players[2].potions > 0)
+      }
+      if (potsToSteal) {
         $('.action-menu').append('<div class = "menu-item steal">STEAL</div>')
         $('.steal').click(this.steal.bind(this))
       }
@@ -566,7 +616,7 @@ function RedMage(side, slot) {
 //
   var game = {
     turn: 0,
-    players: [new Thief("l",1), new Thief("r",1)],
+    players: [],
     updateHPs: function() {
       for (var i=0; i < game.players.length; i++) {
         game.players[i].updateHP()
@@ -574,6 +624,7 @@ function RedMage(side, slot) {
     },
     nextTurn: function() {
       game.updateHPs()
+      // console.log("turn" + game.turn);
       // console.log("before: " + this.turn)
       if (this.turn === this.players.length) {
         this.turn = 0
@@ -587,7 +638,7 @@ function RedMage(side, slot) {
     nextAction: function(){
       game.updateHPs()
       // console.log((game.players[0].hp > 0) && (game.players[1].hp > 0))
-      if ((game.players[0].hp > 0) && (game.players[1].hp > 0)){
+      if (((game.players[0].hp > 0) && (game.players[2].hp > 0)) && (game.players[1].hp > 0) && (game.players[3].hp > 0)){
         if (this.turn === this.players.length) {
           this.turn = 0
           this.nextTurn()
@@ -657,7 +708,7 @@ function RedMage(side, slot) {
       return (game.turn === 0 || game.turn === 1) ? 1 : 2
     },
     nextCharacter: function(){
-      console.log(game.players[game.turn]);
+      // console.log(game.players[game.turn]);
       if (game.turn < 3) {
         game.turn++
         game.characterSelect()
