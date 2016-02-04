@@ -68,8 +68,8 @@ body {
 }
 
 #l-slot-2, #r-slot-2 {
-  background-image: url("../assets/fighter_sheet.png");
-  background-position: 0 0;
+  /*background-image: url("../assets/fighter_sheet.png");*/
+  /*background-position: 0 0;*/
 }
 
 #start {

@@ -600,17 +600,18 @@ function RedMage(side, slot) {
     init: function(){
       for (var i = 0; i < game.players.length; i++){
         game.players[i].init()
-        if (game.players[i].side === 'l') {
-          game.players[i].setOpponent(game.players[1])
-        } else {
-          game.players[i].setOpponent(game.players[0])
-        }
+        // if (game.players[i].side === 'l') {
+        //   game.players[i].setOpponent(game.players[1])
+        // } else {
+        //   game.players[i].setOpponent(game.players[0])
+        // }
       }
       prelude.load()
       battle.play()
       game.nextTurn()
     },
     characterSelect: function(){
+      console.log("turn " + game.turn);
       $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><img src="assets/black_belt_default.png" class="menu-item black-belt"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"><img src="assets/red_mage_default.png" class="menu-item red-mage"></div>')
       $('.fighter').click(game.pickFighter)
       $('.thief').click(game.pickThief)
@@ -621,77 +622,48 @@ function RedMage(side, slot) {
     },
     pickFighter: function(){
       $('#character-select').remove()
-      var side = game.turn === (0 || 2) ? 'l' : 'r'
-      game.players[game.turn] = new Fighter(side,1)
-      if (game.turn===0) {
-        game.turn++
-        game.characterSelect()
-      } else {
-        game.turn = 0
-        game.init()
-      }
+      game.players[game.turn] = new Fighter(game.getSide(),game.getSlot())
+      game.nextCharacter()
     },
     pickThief: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
-      game.players[game.turn] = new Thief(side,1)
-      if (game.turn===0) {
-        game.turn++
-        game.characterSelect()
-      } else {
-        game.turn = 0
-        game.init()
-      }
+      game.players[game.turn] = new Thief(game.getSide(),game.getSlot())
+      game.nextCharacter()
     },
     pickBlackBelt: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
-      game.players[game.turn] = new BlackBelt(side,1)
-      if (game.turn===0) {
-        game.turn++
-        game.characterSelect()
-      } else {
-        game.turn = 0
-        game.init()
-      }
+      game.players[game.turn] = new BlackBelt(game.getSide(),game.getSlot())
+      game.nextCharacter()
     },
     pickBlackMage: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
-      game.players[game.turn] = new BlackMage(side,1)
-      if (game.turn===0) {
-        game.turn++
-        game.characterSelect()
-      } else {
-        game.turn = 0
-        game.init()
-      }
+      game.players[game.turn] = new BlackMage(game.getSide(),game.getSlot())
+      game.nextCharacter()
     },
     pickWhiteMage: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
-      game.players[game.turn] = new WhiteMage(side,1)
-      if (game.turn===0) {
-        game.turn++
-        game.characterSelect()
-      } else {
-        game.turn = 0
-        game.init()
-      }
+      game.players[game.turn] = new WhiteMage(game.getSide(),game.getSlot())
+      game.nextCharacter()
     },
     pickRedMage: function(){
       $('#character-select').remove()
-      var side = game.turn === 0 ? 'l' : 'r'
-      game.players[game.turn] = new RedMage(side,1)
-      if (game.turn===0) {
+      game.players[game.turn] = new RedMage(game.getSide(),game.getSlot())
+      game.nextCharacter()
+    },
+    getSide: function(){
+      return (game.turn === 0 || game.turn === 2) ? 'l' : 'r'
+    },
+    getSlot: function(){
+      return (game.turn === 0 || game.turn === 1) ? 1 : 2
+    },
+    nextCharacter: function(){
+      console.log(game.players[game.turn]);
+      if (game.turn < 3) {
         game.turn++
         game.characterSelect()
       } else {
         game.turn = 0
         game.init()
       }
-    },
-    getSide: function(){
-      return game.turn === 0 ? 'l' : 'r'
     }
   }
