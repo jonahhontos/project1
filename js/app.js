@@ -174,6 +174,7 @@ prelude.play()
     }
 
     this.getOpponent = function(){
+      $('#bg-image').append('<div id="select-message" class="window">Select Target</div>')
       player = this
       var side = this.side
       if (this.turnAction === this.castHeal){
@@ -217,6 +218,7 @@ prelude.play()
             player.setOpponent(game.players[3])
             break
         }
+        $('#select-message').remove()
         player.endTurn()
       })
     }
@@ -610,7 +612,7 @@ function castHeal(){
         this.turn = 0
         this.nextAction()
       } else {
-        this.players[this.turn].takeTurn()
+        if(this.players[this.turn].hp > 0) {this.players[this.turn].takeTurn()}
         this.turn++
       }
       // console.log("after: " + this.turn);
@@ -623,7 +625,7 @@ function castHeal(){
           this.turn = 0
           this.nextTurn()
         } else {
-          this.players[this.turn].turnAction()
+          if(this.players[this.turn].hp > 0) {this.players[this.turn].turnAction()}
           this.turn++
         }
       }

@@ -103,12 +103,16 @@ body {
   -ms-filter: "FlipH";
 }
 
-#win-message {
+#win-message, #select-message {
   position: relative;
   width: 364px;
   left:281px;
   top: 220px;
   text-align: center;
+}
+
+#select-message {
+  top: 20px;
 }
 
 #character-select {
