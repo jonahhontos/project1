@@ -241,7 +241,7 @@ prelude.play()
         player.setSprite(frame === false ? "default" : "use")
         frame = !frame
       }, 250)
-      battle.pause()
+      battle.load()
       win.play()
 
 
@@ -551,7 +551,7 @@ function RedMage(side, slot) {
           game.players[i].setOpponent(game.players[0])
         }
       }
-      prelude.pause()
+      prelude.load()
       battle.play()
       game.nextTurn()
     },
