@@ -27,10 +27,6 @@ win.setAttribute('src','assets/win.mp3')
   $('#start').click(function(){
     $(this).hide()
     game.characterSelect()
-    //
-    // game.init()
-    // game.nextTurn()
-    // battle.play()
   })
 
 //
