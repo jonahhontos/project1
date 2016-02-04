@@ -183,8 +183,12 @@ prelude.play()
         player.setSprite("attack")
         player.$weaponSlot.show()
         player.opponent.takeDamage(attackStrength)
+        slash.play()
         player.$weaponSlot.animate({"top": "+=16px","right":"+=16px"}, speed)
-                          .animate({"top": "-=16px","right":"-=16px"}, speed/2)
+                          .animate({"top": "-=16px","right":"-=16px"}, speed/2,function(){
+                            slash.load()
+                            slash.play()
+                          })
                           .animate({"top": "+=16px","right":"+=16px"}, speed)
                           .animate({"top": "-=16px","right":"-=16px"}, speed/2,
                           function (){
