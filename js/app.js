@@ -1,5 +1,5 @@
 // $(document).ready(function() {
-
+// $('body').on("mouseover", function(){console.log(event.target);})
   //
   // GLOBALS
   //
@@ -175,7 +175,16 @@ prelude.play()
 
     this.getOpponent = function(){
       player = this
-      if (this.side === 'l'){
+      var side = this.side
+      if (this.turnAction === this.castHeal){
+        if (this.side === 'l') {
+          side = 'r'
+        } else {
+          side = 'l'
+        }
+      }
+
+      if (side === 'l'){
         var $targets = $('#r-slot-1,#r-slot-2')
       } else {
         var $targets = $('#l-slot-1,#l-slot-2')
@@ -225,6 +234,7 @@ prelude.play()
     }
 
     this.potion = function() {
+      $('.action-menu').remove()
       this.turnAction = this.usePotion
       this.endTurn()
     }
@@ -370,9 +380,9 @@ prelude.play()
     this.addUniqueAction = function(){
       var potsToSteal = false
       if (this.side === 'l') {
-        potsToSteal = (game.players[1].potions > 0) && (game.players[3].potions > 0)
+        potsToSteal = (game.players[1].potions > 0) || (game.players[3].potions > 0)
       } else {
-        potsToSteal = (game.players[0].potions > 0) && (game.players[2].potions > 0)
+        potsToSteal = (game.players[0].potions > 0) || (game.players[2].potions > 0)
       }
       if (potsToSteal) {
         $('.action-menu').append('<div class = "menu-item steal">STEAL</div>')
@@ -381,8 +391,9 @@ prelude.play()
     }
 
     this.steal = function(){
+      $('.action-menu').remove()
       this.turnAction = this.stealItem
-      this.endTurn()
+      this.getOpponent()
     }
 
     this.stealItem = function() {
@@ -392,18 +403,25 @@ prelude.play()
       this.$slotID.promise().done(function(){
         player.setSprite("use")
         player.opponent.takeDamage(0)
-        player.$damage.text("STOLE POTION!")
+        player.$damage.css("width", "350px")
+        if (player.opponent.potions > 0){
+          player.$damage.text("STOLE POTION!")
+          player.potions += 1
+          player.opponent.potions -= 1
+        } else {
+          player.$damage.text("COULDN'T STEAL!")
+        }
         player.$damage.css("opacity", "1.0")
         player.$damage.css("color","#00FF00")
         player.$damage.css("left","+=" + adjust)
-        player.potions += 1
-        player.opponent.potions -= 1
         steal.play()
         player.$damage.animate({"top": "-=48px"},350)
                     .animate({"opacity": "0"})
                     .animate({"top": "+=48px"}, 0, function(){
                       player.$damage.css("color","#FFFFFF")
                       player.$damage.css("left","-=" + adjust)
+                      player.$damage.text("")
+                      player.$damage.css("width", "64px")
                       player.walkBackward()
                       player.$slotID.promise().done(function(){
                         game.nextAction()
@@ -443,34 +461,9 @@ function BlackMage(side, slot) {
     }
   }
 
-  this.fire = function(){
-    this.turnAction = this.castFire
-    this.endTurn()
-  }
+  this.fire = pickFire
 
-  this.castFire = function() {
-    player = this
-    var attackStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
-    this.$weaponSlot.css("background-image", "url('./assets/fireball.png')")
-    this.walkForward()
-    this.$slotID.promise().done(function(){
-      player.mp--
-      player.setSprite("use")
-      player.$weaponSlot.show()
-      fire.play()
-      player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
-        player.$weaponSlot.hide()
-        player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
-        player.$weaponSlot.css("left", "")
-        // player.$weaponSlot.css("right", "42px")
-        player.opponent.takeDamage(attackStrength)
-        player.walkBackward()
-        player.$slotID.promise().done(function(){
-          game.nextAction()
-        })
-      })
-    })
-  }
+  this.castFire = castFire
 }
 
 function WhiteMage(side, slot) {
@@ -490,37 +483,9 @@ function WhiteMage(side, slot) {
     }
   }
 
-  this.heal = function(){
-    this.turnAction = this.castHeal
-    this.endTurn()
-  }
+  this.heal = pickHeal
 
-  this.castHeal = function(){
-    player = this
-    var healStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
-    var adjust = this.side === 'l' ? "120px" : "-120px"
-    this.mp--
-    this.walkForward()
-    this.$slotID.promise().done(function(){
-      heal.play()
-      player.setSprite("use")
-      player.$damage.css("opacity", "1.0")
-      player.$damage.css("color","#00FF00")
-      player.$damage.css("left","+=" + adjust)
-      player.$damage.text(healStrength)
-      player.hp += healStrength
-      player.$damage.animate({"top": "-=48px"},350)
-                  .animate({"opacity": "0"})
-                  .animate({"top": "+=48px"}, 0, function(){
-                    player.$damage.css("color","#FFFFFF")
-                    player.$damage.css("left","-=" + adjust)
-                    player.walkBackward()
-                    player.$slotID.promise().done(function(){
-                      game.nextAction()
-                    })
-                  })
-    })
-  }
+  this.castHeal = castHeal
 }
 
 function RedMage(side, slot) {
@@ -542,66 +507,76 @@ function RedMage(side, slot) {
     }
   }
 
-  this.fire = function(){
-    this.turnAction = this.castFire
-    this.endTurn()
-  }
+  this.fire = pickFire
 
-  this.castFire = function() {
-    player = this
-    var attackStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
-    this.$weaponSlot.css("background-image", "url('./assets/fireball.png')")
-    this.walkForward()
-    this.$slotID.promise().done(function(){
-      player.mp--
-      player.setSprite("use")
-      fire.play()
-      player.$weaponSlot.show()
-      player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
-        player.$weaponSlot.hide()
-        player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
-        player.$weaponSlot.css("left", "")
-        // player.$weaponSlot.css("right", "42px")
-        player.opponent.takeDamage(attackStrength)
-        player.walkBackward()
-        player.$slotID.promise().done(function(){
-          game.nextAction()
-        })
+  this.castFire = castFire
+
+  this.heal = pickHeal
+
+  this.castHeal = castHeal
+}
+
+function pickFire(){
+  $('.action-menu').remove()
+  this.turnAction = this.castFire
+  this.getOpponent()
+}
+
+function castFire(){
+  player = this
+  var attackStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
+  this.$weaponSlot.css("background-image", "url('./assets/fireball.png')")
+  this.walkForward()
+  this.$slotID.promise().done(function(){
+    player.mp--
+    player.setSprite("use")
+    player.$weaponSlot.show()
+    fire.play()
+    player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
+      player.$weaponSlot.hide()
+      player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
+      player.$weaponSlot.css("left", "")
+      // player.$weaponSlot.css("right", "42px")
+      player.opponent.takeDamage(attackStrength)
+      player.walkBackward()
+      player.$slotID.promise().done(function(){
+        game.nextAction()
       })
     })
-  }
+  })
+}
 
-  this.heal = function(){
-    this.turnAction = this.castHeal
-    this.endTurn()
-  }
+function pickHeal(){
+  $('.action-menu').remove()
+  this.turnAction = this.castHeal
+  this.getOpponent()
+}
 
-  this.castHeal = function(){
-    player = this
-    var healStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
-    var adjust = this.side === 'l' ? "120px" : "-120px"
-    this.mp--
-    this.walkForward()
-    this.$slotID.promise().done(function(){
-      player.setSprite("use")
-      heal.play()
-      player.$damage.css("opacity", "1.0")
-      player.$damage.css("color","#00FF00")
-      player.$damage.css("left","+=" + adjust)
-      player.$damage.text(healStrength)
-      player.hp += healStrength
-      player.$damage.animate({"top": "-=48px"},350)
-                  .animate({"opacity": "0"})
-                  .animate({"top": "+=48px"}, 0, function(){
-                    player.$damage.css("color","#FFFFFF")
-                    player.$damage.css("left","-=" + adjust)
-                    player.walkBackward()
-                    player.$slotID.promise().done(function(){
-                      game.nextAction()
-                    })
+function castHeal(){
+  player = this
+  var healStrength = Math.floor((Math.random()*(this.mag/2)) + this.mag * 0.75)
+  var adjust = this.side === 'l' ? "120px" : "-120px"
+  this.mp--
+  this.walkForward()
+  this.$slotID.promise().done(function(){
+    heal.play()
+    player.setSprite("use")
+    player.$damage.css("opacity", "1.0")
+    player.$damage.css("color","#00FF00")
+    player.$damage.css("left","+=" + adjust)
+    player.$damage.text(healStrength)
+    player.hp += healStrength
+    player.$damage.animate({"top": "-=48px"},350)
+                .animate({"opacity": "0"})
+                .animate({"top": "+=48px"}, 0, function(){
+                  player.$damage.css("color","#FFFFFF")
+                  player.$damage.css("left","-=" + adjust)
+                  player.walkBackward()
+                  player.$slotID.promise().done(function(){
+                    game.nextAction()
                   })
-    })
-  }
+                })
+  })
 }
 
   Fighter.prototype = new Player()
