@@ -10,7 +10,7 @@ var battle = document.createElement('audio')
 battle.setAttribute('src','assets/battle.mp3')
 var win = document.createElement('audio')
 win.setAttribute('src','assets/win.mp3')
-// prelude.play()
+prelude.play()
 
   $('body').on("mouseover",".menu-item",function(){
     $(this).toggleClass("menu-item-hover")
@@ -241,8 +241,8 @@ win.setAttribute('src','assets/win.mp3')
         player.setSprite(frame === false ? "default" : "use")
         frame = !frame
       }, 250)
-      // battle.pause()
-      // win.play()
+      battle.pause()
+      win.play()
 
 
     }
@@ -272,7 +272,7 @@ win.setAttribute('src','assets/win.mp3')
     this.imagePrefix = "thief"
     this.hp = 250
     this.str = 40
-    this.critPercent = 30
+    this.critPercent = 40
 
     this.addUniqueAction = function(){
       if (this.opponent.potions > 0) {
@@ -310,6 +310,19 @@ win.setAttribute('src','assets/win.mp3')
                       })
                     })
     })
+  }
+}
+
+function BlackBelt(side, slot) {
+  this.side = side
+  this.slot = slot
+  this.imagePrefix = "black_belt"
+  this.hp = 400
+  this.str = 40
+  this.critPercent = 15
+
+  this.addUniqueAction = function(){
+
   }
 }
 
@@ -537,8 +550,8 @@ function RedMage(side, slot) {
           game.players[i].setOpponent(game.players[0])
         }
       }
-      // prelude.pause()
-      // battle.start()
+      prelude.pause()
+      battle.play()
       game.nextTurn()
     },
     characterSelect: function(){
