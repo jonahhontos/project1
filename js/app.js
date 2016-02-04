@@ -411,7 +411,8 @@ function BlackMage(side, slot) {
       player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
         player.$weaponSlot.hide()
         player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
-        player.$weaponSlot.css("left", "+=680px")
+        player.$weaponSlot.css("left", "")
+        // player.$weaponSlot.css("right", "42px")
         player.opponent.takeDamage(attackStrength)
         player.walkBackward()
         player.$slotID.promise().done(function(){
@@ -509,7 +510,8 @@ function RedMage(side, slot) {
       player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
         player.$weaponSlot.hide()
         player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
-        player.$weaponSlot.css("left", "+=680px")
+        player.$weaponSlot.css("left", "")
+        // player.$weaponSlot.css("right", "42px")
         player.opponent.takeDamage(attackStrength)
         player.walkBackward()
         player.$slotID.promise().done(function(){
