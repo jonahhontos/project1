@@ -692,6 +692,3 @@ function RedMage(side, slot) {
       }
     }
   }
-// game.init()
-
-// })

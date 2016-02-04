@@ -115,6 +115,7 @@ body {
   text-align: center;
   top: -172px;
   width:64px;
+  z-index: 10;
 }
 
 .weapon-slot {
