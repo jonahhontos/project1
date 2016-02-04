@@ -61,7 +61,7 @@ prelude.play()
       this.$weaponSlot.css("background-image", "url('./assets/" + this.imagePrefix + "_weapon.png')")
       // console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
       this.$damage = $("#" + this.side + "-slot-" + this.slot + "-damage")
-      this.$hp = $('#hp-' + this.side)
+      this.$hp = $('#hp-' + this.side + "-" + this.slot)
       this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_sheet.png')")
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"

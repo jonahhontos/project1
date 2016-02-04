@@ -46,7 +46,7 @@ body {
   background-color: #0000ff;*/
 }
 
-#hp-l,#hp-r {
+#hp-l-1,#hp-r-1 {
   position: relative;
   display: inline-block;
   top: -36px;
@@ -55,12 +55,17 @@ body {
   /*top: 312px;*/
 }
 
-#hp-l {
+#hp-l-1 {
   left: 16px;
 }
 
-#hp-r {
+#hp-r-1 {
   left: 642px;
+}
+
+#l-slot-2, #r-slot2 {
+  background-image: url("../assets/fighter_sheet.png");
+  background-position: 0 0;
 }
 
 #start {
