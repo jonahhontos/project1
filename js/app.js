@@ -20,6 +20,8 @@ var heal = document.createElement('audio')
 heal.setAttribute('src','assets/heal.wav')
 var potion = document.createElement('audio')
 potion.setAttribute('src','assets/potion.wav')
+var steal = document.createElement('audio')
+steal.setAttribute('src','assets/steal.wav')
 
 
 prelude.play()
@@ -221,6 +223,7 @@ prelude.play()
         player.$damage.css("left","+=" + adjust)
         player.$damage.text("100")
         player.hp += 100
+        potion.play()
         player.$damage.animate({"top": "-=48px"},350)
                     .animate({"opacity": "0"})
                     .animate({"top": "+=48px"}, 0, function(){
@@ -318,6 +321,7 @@ prelude.play()
         player.$damage.css("left","+=" + adjust)
         player.potions += 1
         player.opponent.potions -= 1
+        steal.play()
         player.$damage.animate({"top": "-=48px"},350)
                     .animate({"opacity": "0"})
                     .animate({"top": "+=48px"}, 0, function(){
@@ -376,6 +380,7 @@ function BlackMage(side, slot) {
       player.mp--
       player.setSprite("use")
       player.$weaponSlot.show()
+      fire.play()
       player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
         player.$weaponSlot.hide()
         player.$weaponSlot.css("background-image", "url('./assets/"+player.imagePrefix+"_weapon.png')")
@@ -419,6 +424,7 @@ function WhiteMage(side, slot) {
     this.mp--
     this.walkForward()
     this.$slotID.promise().done(function(){
+      heal.play()
       player.setSprite("use")
       player.$damage.css("opacity", "1.0")
       player.$damage.css("color","#00FF00")
@@ -471,6 +477,7 @@ function RedMage(side, slot) {
     this.$slotID.promise().done(function(){
       player.mp--
       player.setSprite("use")
+      fire.play()
       player.$weaponSlot.show()
       player.$weaponSlot.animate({"left":"-=720px"}, 300, "linear", function(){
         player.$weaponSlot.hide()
@@ -498,6 +505,7 @@ function RedMage(side, slot) {
     this.walkForward()
     this.$slotID.promise().done(function(){
       player.setSprite("use")
+      heal.play()
       player.$damage.css("opacity", "1.0")
       player.$damage.css("color","#00FF00")
       player.$damage.css("left","+=" + adjust)
