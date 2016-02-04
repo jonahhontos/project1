@@ -62,6 +62,7 @@ prelude.play()
       // console.log("url('../assets/" + this.imagePrefix + "_weapon.png')")
       this.$damage = $("#" + this.side + "-slot-" + this.slot + "-damage")
       this.$hp = $('#hp-' + this.side)
+      this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_sheet.png')")
       this.setSprite()
       this.walkForwardDirection = this.side === "l" ? "+=20px" : "-=20px"
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
@@ -73,8 +74,31 @@ prelude.play()
 
     this.setSprite = function(state) {
       if (state===undefined){state="default"}
+      switch (state) {
+        case "default":
+          this.$slotID.css("background-position","0 0")
+          break
+        case "walk":
+          this.$slotID.css("background-position","-72px 0")
+          break
+        case "attack":
+          this.$slotID.css("background-position","-144px 0")
+          break
+        case "use":
+          this.$slotID.css("background-position","-216px 0")
+          break
+        case "hurt":
+          this.$slotID.css("background-position","-288px 0")
+          break
+        case "ko":
+          this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_ko.png')")
+          this.$slotID.css("width", "104px")
+        default:
+          this.$slotID.css("background-position","0 0")
+          break
+      }
       // console.log("sprite set to " + state)
-      this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_" + state + ".png')")
+      // this.$slotID.css("background-image", "url('./assets/" + this.imagePrefix + "_" + state + ".png')")
       // console.log("url('./assets/" + this.imagePrefix + "_" + state + ".png')")
     }
 
