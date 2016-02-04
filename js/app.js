@@ -10,6 +10,18 @@ var battle = document.createElement('audio')
 battle.setAttribute('src','assets/battle.mp3')
 var win = document.createElement('audio')
 win.setAttribute('src','assets/win.mp3')
+var select = document.createElement('audio')
+select.setAttribute('src','assets/select.wav')
+var slash = document.createElement('audio')
+slash.setAttribute('src','assets/slash.wav')
+var fire = document.createElement('audio')
+fire.setAttribute('src','assets/fire.wav')
+var heal = document.createElement('audio')
+heal.setAttribute('src','assets/heal.wav')
+var potion = document.createElement('audio')
+potion.setAttribute('src','assets/potion.wav')
+
+
 prelude.play()
 
   $('body').on("mouseover",".menu-item",function(){
