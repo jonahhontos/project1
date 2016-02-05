@@ -71,8 +71,12 @@ prelude.play()
       this.walkBackwardDirection = this.side === "l" ? "-=20px" : "+=20px"
     }
 
+    this.alive = function() {
+      return this.hp > 0
+    }
+
     this.setOpponent = function(opponent) {
-      console.log(opponent);
+      // console.log(opponent);
       this.opponent = opponent
     }
 
@@ -111,7 +115,27 @@ prelude.play()
         this.$hp.css("color", "#FF0000")
         this.$hp.text("K.O.")
         this.setSprite("ko")
-        this.opponent.win()
+        var teamMate;
+        var otherSide;
+        if (this.side === 'l') {
+          otherSide = 'r'
+          if (this.slot === 1){
+            teamMate = game.players[2]
+          } else {
+            teamMate = game.players[0]
+          }
+        } else {
+          otherSide = 'l'
+          if (this.slot === 1){
+            teamMate = game.players[3]
+          } else {
+            teamMate = game.players[1]
+          }
+        }
+        if (!teamMate.alive()) {
+          game.win(otherSide)
+        }
+        // this.opponent.win()
       } else {
         if (this.hp < (this.initialHP / 3)) {
           this.setSprite("hurt")
@@ -335,22 +359,22 @@ prelude.play()
     }
 
     // A WINRAR IS YOU
-    this.win = function(){
-      // console.log(this.side + " win");
-      var side = this.side === 'l' ? "Left" : "Right"
-      $('#bg-image').append('<div id="win-message" class="window">' + side + ' Player Wins!</div>')
-      // $('#win-message').text(side + " Player Wins!")
-      player = this
-      var frame = true
-      window.setInterval(function(){
-        player.setSprite(frame === false ? "default" : "use")
-        frame = !frame
-      }, 250)
-      battle.load()
-      win.play()
-
-
-    }
+    // this.win = function(){
+    //   // console.log(this.side + " win");
+    //   var side = this.side === 'l' ? "Left" : "Right"
+    //   $('#bg-image').append('<div id="win-message" class="window">' + side + ' Player Wins!</div>')
+    //   // $('#win-message').text(side + " Player Wins!")
+    //   player = this
+    //   var frame = true
+    //   window.setInterval(function(){
+    //     player.setSprite(frame === false ? "default" : "use")
+    //     frame = !frame
+    //   }, 250)
+    //   battle.load()
+    //   win.play()
+    //
+    //
+    // }
 
   } // PLAYER CONSTRUCTOR END
 
@@ -609,6 +633,7 @@ function castHeal(){
 //
   var game = {
     turn: 0,
+    won: false,
     players: [],
     updateHPs: function() {
       for (var i=0; i < game.players.length; i++) {
@@ -616,28 +641,47 @@ function castHeal(){
       }
     },
     nextTurn: function() {
-      game.updateHPs()
-      // console.log("turn" + game.turn);
-      // console.log("before: " + this.turn)
-      if (this.turn === this.players.length) {
-        this.turn = 0
-        this.nextAction()
-      } else {
-        if(this.players[this.turn].hp > 0) {this.players[this.turn].takeTurn()}
-        this.turn++
+      if (!game.won){
+        game.updateHPs()
+        // console.log("turn" + game.turn);
+        // console.log("before: " + this.turn)
+        console.log("turn " + game.turn);
+        if (this.turn === this.players.length) {
+          console.log("this.turn === this.players.length");
+          this.turn = 0
+          this.nextAction()
+        } else {
+          if(this.players[this.turn].hp > 0) {
+            console.log("this.players[this.turn].hp > 0");
+            this.players[this.turn].takeTurn()
+            this.turn++
+          } else {
+            console.log("else");
+            this.turn++
+            game.nextTurn()
+          }
       }
+    }
       // console.log("after: " + this.turn);
     },
     nextAction: function(){
       game.updateHPs()
       // console.log((game.players[0].hp > 0) && (game.players[1].hp > 0))
-      if (((game.players[0].hp > 0) && (game.players[2].hp > 0)) && (game.players[1].hp > 0) && (game.players[3].hp > 0)){
+      if (((game.players[0].hp > 0) || (game.players[2].hp > 0)) && (game.players[1].hp > 0) || (game.players[3].hp > 0)){
         if (this.turn === this.players.length) {
           this.turn = 0
           this.nextTurn()
         } else {
-          if(this.players[this.turn].hp > 0) {this.players[this.turn].turnAction()}
-          this.turn++
+          console.log("action " + game.turn);
+          if(this.players[this.turn].hp > 0) {
+            console.log("this.players[this.turn].hp > 0)");
+            this.players[this.turn].turnAction()
+            this.turn++
+          } else {
+            this.turn++
+            game.nextAction()
+          }
+
         }
       }
     },
@@ -708,6 +752,25 @@ function castHeal(){
       } else {
         game.turn = 0
         game.init()
+      }
+    },
+    win: function(side){
+      if (!game.won){
+        game.won = true
+        // console.log(this.side + " win");
+        var sideString = side === 'l' ? "Left" : "Right"
+        $('#bg-image').append('<div id="win-message" class="window">' + sideString + ' Team Wins!</div>')
+        // $('#win-message').text(side + " Player Wins!")
+        var one = side === 'l' ? game.players[0] : game.players[1]
+        var two = side === 'l' ? game.players[2] : game.players[3]
+        var frame = true
+        window.setInterval(function(){
+          one.setSprite(frame === false ? "default" : "use")
+          two.setSprite(frame === false ? "default" : "use")
+          frame = !frame
+        }, 250)
+        battle.load()
+        win.play()
       }
     }
   }
