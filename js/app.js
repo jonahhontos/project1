@@ -499,7 +499,7 @@ function WhiteMage(side, slot) {
   this.hp = 200
   this.str = 35
   this.mag = 150
-  this.mp = 3
+  this.mp = 2
   this.critPercent = 8
 
   this.addUniqueAction = function(){
@@ -522,13 +522,17 @@ function RedMage(side, slot) {
   this.str = 40
   this.mag = 100
   this.mp = 2
+  this.fireMp = 1
+  this.healMp = 1
   this.critPercent = 5
 
   this.addUniqueAction = function(){
-    if (this.mp > 0) {
-      $('.action-menu').append('<div class = "menu-item fire">FIRE ' + this.mp + 'mp</div>')
+    if (this.fireMp > 0) {
+      $('.action-menu').append('<div class = "menu-item fire">FIRE x' + this.fireMp + '</span></div>')
       $('.fire').click(this.fire.bind(this))
-      $('.action-menu').append('<div class = "menu-item heal">HEAL ' + this.mp + 'mp</div>')
+    }
+    if (this.healMp){
+      $('.action-menu').append('<div class = "menu-item heal">HEAL x' + this.healMp + '</div>')
       $('.heal').click(this.heal.bind(this))
     }
   }
@@ -565,6 +569,7 @@ function castFire(){
   this.walkForward()
   this.$slotID.promise().done(function(){
     player.mp--
+    if (player.imagePrefix==="red_mage") {player.fireMp--}
     player.setSprite("use")
     player.$weaponSlot.show()
     fire.play()
@@ -599,6 +604,7 @@ function castHeal(){
   }
   var target = this.opponent
   this.mp--
+  if (player.imagePrefix==="red_mage") {player.healMp--}
   this.walkForward()
   this.$slotID.promise().done(function(){
     heal.play()
