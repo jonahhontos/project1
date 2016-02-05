@@ -769,7 +769,7 @@ function castHeal(){
         game.won = true
         // console.log(this.side + " win");
         var sideString = side === 'l' ? "Left" : "Right"
-        $('#bg-image').append('<div id="win-message" class="window">' + sideString + ' Team Wins!</div>')
+        $('#bg-image').append('<div id="win-message" class="window">' + sideString + ' Team Wins!<br>New Game - <span style="font-size:24px">⌘</span>R</div>')
         // $('#win-message').text(side + " Player Wins!")
         var one = side === 'l' ? game.players[0] : game.players[1]
         var two = side === 'l' ? game.players[2] : game.players[3]
