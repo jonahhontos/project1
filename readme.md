@@ -21,6 +21,8 @@ http://jonahhontos.github.io/project1/ - Play it here
 - STR: 50
 - Crit rate: 4%
 
+
+
  ![thief_default](/assets/thief_default.png)
 
 ##### Thief
@@ -31,6 +33,8 @@ http://jonahhontos.github.io/project1/ - Play it here
 - Unique Action: STEAL
   - Steal one of an opponent's potions
 
+
+
  ![black_belt_default](/assets/black_belt_default.png)
 
 ##### Black Belt
@@ -38,6 +42,8 @@ http://jonahhontos.github.io/project1/ - Play it here
 - Starting HP: 400
 - STR: 40
 - Crit rate: 15%
+
+
 
  ![black_mage_default](/assets/black_mage_default.png)
 
@@ -50,6 +56,8 @@ http://jonahhontos.github.io/project1/ - Play it here
 - Unique action: FIRE (2 uses)
   - Does a special attack based on MAG
 
+
+
  ![white_mage_default](/assets/white_mage_default.png)
 
 ##### White Mage
@@ -60,6 +68,8 @@ http://jonahhontos.github.io/project1/ - Play it here
 - Crit rate: 8%
 - Unique action: HEAL (2 uses)
   - Heals a team member based on MAG
+
+
 
  ![red_mage_default](/assets/red_mage_default.png)
 
