@@ -641,6 +641,9 @@ function castHeal(){
     turn: 0,
     won: false,
     players: [],
+    turnOrder: [],
+    side: "Left",
+    slot: 1,
     updateHPs: function() {
       for (var i=0; i < game.players.length; i++) {
         game.players[i].updateHP()
@@ -652,14 +655,14 @@ function castHeal(){
         // console.log("turn" + game.turn);
         // console.log("before: " + this.turn)
         console.log("turn " + game.turn);
-        if (this.turn === this.players.length) {
-          console.log("this.turn === this.players.length");
+        if (this.turn === this.turnOrder.length) {
+          console.log("this.turn === this.turnOrder.length");
           this.turn = 0
           this.nextAction()
         } else {
-          if(this.players[this.turn].hp > 0) {
-            console.log("this.players[this.turn].hp > 0");
-            this.players[this.turn].takeTurn()
+          if(this.turnOrder[this.turn].hp > 0) {
+            console.log("this.turnOrder[this.turn].hp > 0");
+            this.turnOrder[this.turn].takeTurn()
             this.turn++
           } else {
             console.log("else");
@@ -700,17 +703,20 @@ function castHeal(){
         //   game.players[i].setOpponent(game.players[0])
         // }
       }
+      this.turnOrder = [game.players[0],game.players[2],game.players[1],game.players[3]]
       prelude.load()
       battle.play()
       battle.addEventListener("ended", function(){
-        console.log("ended");
+        // console.log("ended");
         battle.play()
       })
       game.nextTurn()
     },
     characterSelect: function(){
       console.log("turn " + game.turn);
-      $('#bg-image').append('<div class="window" id="character-select">Player ' + (game.turn+1) + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><img src="assets/black_belt_default.png" class="menu-item black-belt"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"><img src="assets/red_mage_default.png" class="menu-item red-mage"></div>')
+      $('#bg-image').append('<div class="window" id="character-select">' + game.side + ' Player ' + game.slot + ' - Select a Class<br><img src="assets/fighter_default.png" class="menu-item fighter"><img src="assets/thief_default.png" class="menu-item thief"><img src="assets/black_belt_default.png" class="menu-item black-belt"><br><img src="assets/black_mage_default.png" class="menu-item black-mage"><img src="assets/white_mage_default.png" class="menu-item white-mage"><img src="assets/red_mage_default.png" class="menu-item red-mage"></div>')
+      if (game.side === "Left") {game.side = "Right"} else {game.side = "Left"}
+      if (game.turn === 1) {game.slot = 2}
       $('.fighter').click(game.pickFighter)
       $('.thief').click(game.pickThief)
       $('.black-belt').click(game.pickBlackBelt)
