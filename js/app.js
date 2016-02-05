@@ -526,9 +526,9 @@ function RedMage(side, slot) {
 
   this.addUniqueAction = function(){
     if (this.mp > 0) {
-      $('.action-menu').append('<div class = "menu-item fire">FIRE x' + this.mp + '</div>')
+      $('.action-menu').append('<div class = "menu-item fire">FIRE ' + this.mp + 'mp</div>')
       $('.fire').click(this.fire.bind(this))
-      $('.action-menu').append('<div class = "menu-item heal">HEAL x' + this.mp + '</div>')
+      $('.action-menu').append('<div class = "menu-item heal">HEAL ' + this.mp + 'mp</div>')
       $('.heal').click(this.heal.bind(this))
     }
   }
@@ -696,6 +696,10 @@ function castHeal(){
       }
       prelude.load()
       battle.play()
+      battle.addEventListener("ended", function(){
+        console.log("ended");
+        battle.play()
+      })
       game.nextTurn()
     },
     characterSelect: function(){
